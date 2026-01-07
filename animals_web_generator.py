@@ -1,45 +1,33 @@
 import json
 
 def load_data(file_path):
-  """ Loads a JSON file """
-  with open(file_path, "r") as handle:
-    return json.load(handle)
+    with open(file_path, "r", encoding="utf-8") as handle:
+        return json.load(handle)
 
-animals_data = load_data('animals_data.json')
+animals_data = load_data("animals_data.json")
 
-animals_string_data = ''
+animals_string_data = ""
 
 for animal in animals_data:
+    animals_string_data += '<li class="cards__item">\n'
+
+    # Name
     if "name" in animal:
-        #animal_name = (animal["name"])
-        print(f"Name: {animal["name"]}")
-        animals_string_data += f"Name: {animal['name']}\n"
+        animals_string_data += f"Name: {animal['name']}<br/>\n"
 
-    if "characteristics" in animal:
-        if "diet" in animal["characteristics"]:
-            animal_diet = animal["locations"][0] = animal["characteristics"]["diet"]
-            print(f"Diet: {animal_diet}")
-            animals_string_data += f"Diet: {animal_diet}\n"
+    # Diet
+    if "characteristics" in animal and "diet" in animal["characteristics"]:
+        animals_string_data += f"Diet: {animal['characteristics']['diet']}<br/>\n"
 
+    # Locations (first one only)
     if "locations" in animal and animal["locations"]:
-        animal_locations = animal["locations"][0]
-        print(f"Locations: {animal_locations}")
-        animals_string_data += f"Locations: {animal_locations}\n"
+        animals_string_data += f"Locations: {animal['locations'][0]}<br/>\n"
 
-    if "characteristics" in animal:
-        if "type" in animal["characteristics"]:
-            print(f"Type: {animal["characteristics"]["type"]}")
-            animals_string_data += f"Type: {animal['characteristics']['type']}\n"
-    print("\n")
-    animals_string_data += "\n"
-    """
-        print(
-        f"Name: {animal_name}\n"
-        f"Diet: {animal_diet}\n"
-        f"Locations: {animal_locations}\n"
-        f"Type: {animal_type}\n"
-    )
-    """
+    # Type
+    if "characteristics" in animal and "type" in animal["characteristics"]:
+        animals_string_data += f"Type: {animal['characteristics']['type']}<br/>\n"
+
+    animals_string_data += "</li>\n\n"
 
 with open("animals_template.html", "r", encoding="utf-8") as file:
     template_content = file.read()
